@@ -281,7 +281,7 @@ function torbutton_hiddenservice_init() {
   }
 
   address = get_onion_address();
-  details = torbutton_send_ctrl_cmd_useful("GETINFO hs/desc/id/" + address.replace(".onion", "") + "\r\n");
+  details = torbutton_send_ctrl_cmd_return("GETINFO hs/desc/id/" + address.replace(".onion", "") + "\r\n");
 
   Components.utils.import("resource://gre/modules/AddonManager.jsm");
     AddonManager.getAddonByID("torbutton@torproject.org", function(addon) {

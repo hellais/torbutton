@@ -1240,7 +1240,7 @@ function torbutton_array_to_hexdigits(array) {
 //
 // Executes a command on the control port.
 // Return 0 in error, bytes on success;
-function torbutton_send_ctrl_cmd_useful(command) {
+function torbutton_send_ctrl_cmd_return(command) {
   try {
     var socketTransportService = Components.classes["@mozilla.org/network/socket-transport-service;1"]
         .getService(Components.interfaces.nsISocketTransportService);
@@ -1288,46 +1288,13 @@ function torbutton_send_ctrl_cmd_useful(command) {
 // Executes a command on the control port.
 // Return 0 in error, 1 for success.
 function torbutton_send_ctrl_cmd(command) {
-  try {
-    var socketTransportService = Components.classes["@mozilla.org/network/socket-transport-service;1"]
-        .getService(Components.interfaces.nsISocketTransportService);
-    var socket = socketTransportService.createTransport(null, 0, m_tb_control_host, m_tb_control_port, null);
+  var return_value = tor_button_send_ctrl_cmd(command);
 
-    // If we don't get a response from the control port in 2 seconds, someting is wrong..
-    socket.setTimeout(Ci.nsISocketTransport.TIMEOUT_READ_WRITE, 2);
-
-    var input = socket.openInputStream(3, 1, 1); // 3 == OPEN_BLOCKING|OPEN_UNBUFFERED
-    var output = socket.openOutputStream(3, 1, 1); // 3 == OPEN_BLOCKING|OPEN_UNBUFFERED
-
-    var inputStream     = Cc["@mozilla.org/binaryinputstream;1"].createInstance(Ci.nsIBinaryInputStream);
-    var outputStream    = Cc["@mozilla.org/binaryoutputstream;1"].createInstance(Ci.nsIBinaryOutputStream);
-
-    inputStream.setInputStream(input);
-    outputStream.setOutputStream(output);
-
-    var auth_cmd = "AUTHENTICATE "+m_tb_control_pass+"\r\n";
-    outputStream.writeBytes(auth_cmd, auth_cmd.length);
-
-    var bytes = torbutton_socket_readline(inputStream);
-
-    if (bytes.indexOf("250") != 0) {
-      torbutton_safelog(4, "Unexpected auth response on control port "+m_tb_control_port+":", bytes);
-      return 0;
-    }
-
-    outputStream.writeBytes(command, command.length);
-    bytes = torbutton_socket_readline(inputStream);
-    if(bytes.indexOf("250") != 0) {
-      torbutton_safelog(4, "Unexpected command response on control port "+m_tb_control_port+":", bytes);
-      return 0;
-    }
-
-    socket.close(1);
-    return 1;
-  } catch(e) {
-    torbutton_log(4, "Exception on control port "+e);
+  if (return_value === 0)
     return 0;
-  }
+  else
+    return 1;
+
 }
 
 // Bug 1506 P4: Needed for New Identity.
