@@ -267,4 +267,34 @@ function torbutton_about_init() {
 
 }
 
+function torbutton_hiddenservice_init() {
+  // XXX fuck the workaround. Only FF > 4 and Mozilla > 2;
+  var address,
+    details,
+    nym,
+    wm = Components.classes["@mozilla.org/appshell/window-mediator;1"]
+                   .getService(Components.interfaces.nsIWindowMediator),
+    win = wm.getMostRecentWindow("navigator:browser");
+
+  var get_onion_address = function(){
+    return win.content.document.location.host;
+  }
+
+  address = get_onion_address();
+  details = torbutton_send_ctrl_cmd_useful("GETINFO hs/desc/id/" + address.replace(".onion", "") + "\r\n");
+
+  Components.utils.import("resource://gre/modules/AddonManager.jsm");
+    AddonManager.getAddonByID("torbutton@torproject.org", function(addon) {
+      var el_addr = document.getElementById("hsAddress"),
+        el_details = document.getElementById("hsDetails");
+
+      el_addr.setAttribute("value", address);
+      el_details.setAttribute("value", details);
+
+      addon.details = details;
+      addon.nym = nym;
+      addon.address = address;
+  });
+}
+
 

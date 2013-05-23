@@ -37,6 +37,13 @@
                   insertafter="context-stop"
                   oncommand="window.open('chrome://torbutton/content/about.xul', '', 'chrome,centerscreen');"/>
 
+        <menuitem id="torbutton-hiddenservice"
+                  label="Hidden Service Information"
+                  accesskey="somekey"
+                  insertafter="context-stop"
+                  oncommand="window.open('chrome://torbutton/content/hiddenservice.xul', '', 'chrome,centerscreen');"/>
+
+
         <menuseparator hidden="true"/>
         <menuitem id="torbutton-downloadUpdate"
                   label="&torbutton.context_menu.downloadUpdate;"

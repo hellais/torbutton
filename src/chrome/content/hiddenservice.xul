@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+
+<!DOCTYPE overlay SYSTEM "chrome://torbutton/locale/torbutton.dtd">
+
+<dialog id="torbutton-about"
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+  xmlns:html="http://www.w3.org/1999/xhtml"
+  buttons="accept"
+  title="Information for Hidden Service"
+  width="500"
+  height="400"
+  align="center"
+  onload="torbutton_hiddenservice_init();">
+
+  <script type="application/x-javascript" src="torbutton.js" />
+  <script type="application/x-javascript" src="torbutton_util.js" />
+
+  <vbox>
+
+    <groupbox>
+      <caption label="Hidden Service Details"/>
+      <label id="hsDetails"/>
+    </groupbox>
+
+    <groupbox>
+      <caption label="Hidden Service Address"/>
+      <label id="hsAddress"/>
+    </groupbox>
+
+    <groupbox>
+      <label>Greetz: hellais, asn</label>
+    </groupbox>
+
+  </vbox>
+</dialog>
